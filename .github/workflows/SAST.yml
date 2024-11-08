@@ -1,4 +1,4 @@
-name: Run SAST with Securecodebox
+name: Run SAST with Securecodebox v1
 
 on:
   push:
