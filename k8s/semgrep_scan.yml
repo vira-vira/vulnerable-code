@@ -1,7 +1,7 @@
 apiVersion: "execution.securecodebox.io/v1"
 kind: Scan
 metadata:
-  name: "semgrep-vulnerable-code-github 1"
+  name: "semgrep-scan-to-vulnerable-code"
 spec:
   # Specify a Kubernetes volume that will be shared between the scanner and the initContainer
   volumes:
