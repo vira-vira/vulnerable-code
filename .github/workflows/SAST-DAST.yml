@@ -31,3 +31,6 @@ jobs:
 
       - name: Run SEMGREP
         run: kubectl apply -f k8s/semgrep_scan.yml -n scanners
+
+      - name: Run OWASP ZAP
+        run: kubectl apply -f k8s/zap_automation_framework.yml -n scanners
