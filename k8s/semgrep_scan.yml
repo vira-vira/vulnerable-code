@@ -1,34 +1,42 @@
 apiVersion: "execution.securecodebox.io/v1"
 kind: Scan
 metadata:
-  name: "semgrep-scan-vulnerable-code"
+  name: "semgrep-vulnerable-code"
+  annotations:
+    defectdojo.securecodebox.io/product-type-name: "Lab-Tesis-Maestria"
+    defectdojo.securecodebox.io/product-name: "Semgrep scan - Target: https://github.com/vira-vira/vulnerable-code"
+    defectdojo.securecodebox.io/product-description: |
+      Semgrep realiza análisis de código estático (SAST). El target es un sitio llamado
+    defectdojo.securecodebox.io/product-tags: semgrep
+    defectdojo.securecodebox.io/engagement-deduplicate-on-engagement: "true"
 spec:
-  # Specify a Kubernetes volume that will be shared between the scanner and the initContainer
+  # Se crea un volumen dentro de la pod donde será alojado el código
   volumes:
     - name: repository
       emptyDir: {}
-  # Mount the volume in the scan container
+  # Se agrega el volumen al contenedor
   volumeMounts:
     - mountPath: "/repo/"
       name: repository
-  # Specify an init container to clone the repository
+  # Se crea un initcontainer, que realiza el clonado del repositorio
   initContainers:
     - name: "provision-git"
-      # Use an image that includes git
+      # La imagen usada tiene git incluído
       image: bitnami/git
-      # Mount the same volume we also use in the main container
+      # Se agrega el volumen al contenedor
       volumeMounts:
         - mountPath: "/repo/"
           name: repository
-      # Specify the clone command and clone into the volume, mounted at /repo/
+      # Se especifica el comando a ejecutar y donde alojarlo, mounted at /repo/
       command:
         - git
         - clone
-        - "https://github.com/vira-vira/vulnerable-code.git"
-        - /repo/app
-  # Parameterize the semgrep scan itself
+        - "https://github.com/vira-vira/vulnerable-code"
+        - /repo/flask-app
+  # Se ejecuta un escan Semgrep con los siguientes parámetros
   scanType: "semgrep"
   parameters:
     - "-c"
     - "p/ci"
-    - "/repo/app"
+    - "/repo/flask-app"
+
